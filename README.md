@@ -9,7 +9,9 @@ This is a simple starter template for building Node.js and Express.js applicatio
 - **Error Handling**: Provides global error handling middleware to catch and handle errors with appropriate responses.
 - **Routing**: Demonstrates how to set up routes using Express Router.
 - **JSON Web Tokens (JWT) Authentication**: Shows an example of JWT-based authentication using middleware.
-
+- **Sample Routes & Controllers**Sample routes and controllers for creating, updating, deleting, and fetching data.
+- **Google OAuth Setup (Optional)**"Optional Google OAuth setup for social authentication (commented out by default).
+  
 ## Prerequisites
 
 Before you begin, ensure you have met the following requirements:
@@ -23,7 +25,7 @@ Before you begin, ensure you have met the following requirements:
 1. Clone the repository:
 
    ```
-    git clone https://github.com/yourusername/your-repo-name.git
+    git clone https://github.com/Humza1011/nodejs-starter.git
     cd your-repo-name
     ```
 
@@ -39,7 +41,7 @@ Before you begin, ensure you have met the following requirements:
 
 
     ```
-    MONGODB_URL=mongodb://localhost/your-database-name
+    MONGODB_URL=mongodb://127.0.0.1/your-database-name
     JWT_SECRET=your-secret-key
     ```
 
