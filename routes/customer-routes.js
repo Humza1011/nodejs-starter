@@ -24,6 +24,9 @@ router.delete("/:id", customerController.DeleteCustomer);
 // REGISTER CUSTOMER
 router.post("/register", customerController.RegisterCustomer, createJWT);
 
+// LOGIN CUSTOMER
+router.post("/login", customerController.LoginCustomer, createJWT);
+
 // TEST PROTECTED ROUTE
 router.get("/test", verifyJWT, customerController.ProtectedRoute);
 

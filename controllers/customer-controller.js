@@ -122,10 +122,7 @@ const RegisterCustomer = async (req, res, next) => {
     req.user = newCustomer;
     next();
   } catch (error) {
-    console.log(error);
-    return res
-      .status(500)
-      .json({ message: "Registration failed", error: error.message });
+    next(err);
   }
 };
 
@@ -148,9 +145,7 @@ const LoginCustomer = async (req, res, next) => {
     req.user = customer;
     next();
   } catch (error) {
-    return res
-      .status(500)
-      .json({ message: "Login failed", error: error.message });
+    next(err);
   }
 };
 
@@ -177,17 +172,16 @@ const ProtectedRoute = async (req, res) => {
 //   );
 // };
 
-exports.GetCustomers = GetCustomers;
-exports.GetCustomerByID = GetCustomerByID;
-exports.CreateCustomer = CreateCustomer;
-exports.UpdateCustomer = UpdateCustomer;
-exports.DeleteCustomer = DeleteCustomer;
-
-exports.RegisterCustomer = RegisterCustomer;
-exports.LoginCustomer = LoginCustomer;
-
-exports.ProtectedRoute = ProtectedRoute;
-
-// exports.GoogleAuthenticate = GoogleAuthenticate;
-// exports.GoogleAuthenticateRedirect = GoogleAuthenticateRedirect;
-// exports.GoogleAuthenticated = GoogleAuthenticated;
+module.exports = {
+  GetCustomers,
+  GetCustomerByID,
+  CreateCustomer,
+  UpdateCustomer,
+  DeleteCustomer,
+  RegisterCustomer,
+  LoginCustomer,
+  ProtectedRoute,
+  // GoogleAuthenticate,
+  // GoogleAuthenticateRedirect,
+  // GoogleAuthenticated,
+};
