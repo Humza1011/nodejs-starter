@@ -10,7 +10,6 @@ function createJWT(req, res) {
 
   // Send the JWT token to the frontend
   res.status(200).json({
-    message: "User has been verified",
     token: token,
     user: req.user,
   });

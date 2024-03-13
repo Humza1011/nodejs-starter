@@ -10,7 +10,7 @@ const router = express.Router();
 router.get("/", customerController.GetCustomers);
 
 // GET CUSTOMER BY ID
-router.get("/single/:id", customerController.GetCustomerByID);
+router.get("/:id", customerController.GetCustomerByID);
 
 // CREATE NEW CUSTOMER
 router.post("/", customerController.CreateCustomer);
@@ -28,7 +28,7 @@ router.post("/register", customerController.RegisterCustomer, createJWT);
 router.post("/login", customerController.LoginCustomer, createJWT);
 
 // TEST PROTECTED ROUTE
-router.get("/test", verifyJWT, customerController.ProtectedRoute);
+router.get("/protected/test", verifyJWT, customerController.ProtectedRoute);
 
 // // GOOGLE AUTHENTICATION
 // router.get("/login/google", customerController.GoogleAuthenticate);

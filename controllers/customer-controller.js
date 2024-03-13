@@ -47,8 +47,8 @@ const GetCustomers = async (req, res, next) => {
   try {
     const customer = await Customer.find();
     return res.status(200).send(customer);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next({ error });
   }
 };
 
@@ -57,8 +57,8 @@ const GetCustomerByID = async (req, res, next) => {
   try {
     const customer = await Customer.findById(req.params.id);
     return res.status(200).send(customer);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next({ error });
   }
 };
 
@@ -68,20 +68,24 @@ const CreateCustomer = async (req, res, next) => {
   try {
     await customer.save();
     return res.status(200).json(customer);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next({ error });
   }
 };
 
 // UPDATE CUSTOMER
 const UpdateCustomer = async (req, res, next) => {
+  if (req.body.email) {
+    req.body.email = req.body.email.toLowerCase();
+  }
+
   try {
     const customer = await Customer.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
     });
     return res.status(200).json(customer);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next({ error });
   }
 };
 
@@ -90,31 +94,32 @@ const DeleteCustomer = async (req, res, next) => {
   try {
     const customer = await Customer.findByIdAndDelete(req.params.id);
     return res.status(200).json(customer);
-  } catch (err) {
-    next(err);
+  } catch (error) {
+    next({ error });
   }
 };
 
 // REGISTER CUSTOMER ON SIGNUP
 const RegisterCustomer = async (req, res, next) => {
-  console.log("Register Customer");
   const { name, email, password } = req.body;
+  const safeEmail = email.toLowerCase();
 
-  console.log(req.body);
   try {
     // Check if the customer with the same email already exists
-    const existingCustomer = await Customer.findOne({ email });
+    const existingCustomer = await Customer.findOne({ email: safeEmail });
     if (existingCustomer) {
-      return res
-        .status(409)
-        .json({ message: "Customer with this email already exists" });
+      return next({
+        error: { message: "Customer with this email already exists" },
+        status: 409,
+      });
     }
 
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
+    
     const newCustomer = new Customer({
       name,
-      email,
+      email: safeEmail,
       password: hashedPassword,
     });
 
@@ -122,30 +127,37 @@ const RegisterCustomer = async (req, res, next) => {
     req.user = newCustomer;
     next();
   } catch (error) {
-    next(err);
+    next({ error });
   }
 };
 
 // LOGIN CUSTOMER
 const LoginCustomer = async (req, res, next) => {
   const { email, password } = req.body;
+  const safeEmail = email.toLowerCase();
 
   try {
-    const customer = await Customer.findOne({ email });
+    const customer = await Customer.findOne({ email: safeEmail });
 
     if (!customer) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return next({
+        error: { message: "Invalid email or password" },
+        status: 401,
+      });
     }
 
     const passwordMatch = await bcrypt.compare(password, customer.password);
     if (!passwordMatch) {
-      return res.status(401).json({ message: "Invalid email or password" });
+      return next({
+        error: { message: "Invalid email or password" },
+        status: 401,
+      });
     }
 
     req.user = customer;
     next();
   } catch (error) {
-    next(err);
+    next({ error });
   }
 };
 
